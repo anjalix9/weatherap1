@@ -10,28 +10,32 @@
     <div class="maincontainer">
         <div class="container">
             <div>
-
-            
-            <h1> weather App</h1> 
+                <h1>Weather App</h1> 
             </div>
-            <div class="box">
 
-                
-                <div class="picContainer">
-                    
-                    <img src="cloud.png" alt="Cloud Icon">
-                    
+            <!-- 🔍 Search Bar -->
+           <div class="box">
+    <!-- Search bar inside the box -->
+    <div class="search-bar">
+        <input type="text" id="cityInput" placeholder="Enter city name">
+        <button onclick="getWeather()">Search</button>
+    </div>
 
+    <div class="picContainer">
+        <img src="cloud.png" alt="Cloud Icon">
+    </div>
 
-                    
-                    
-
-            </div>
-            
+    <div class="weatherInfo">
+        
+        <h2> 25°C</h2>
+        <h3>Greater Noida, UP</h3>
+        <h4>Thursday</h4>
+    </div>
+</div>
 
         </div>
-        
     </div>
-    
+
+    <script src="script.js"></script>
 </body>
 </html>
