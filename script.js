@@ -1,21 +1,41 @@
-// script.js
+const apiKey = '0ec514be81903094e5afc7d4430ec303';
 
-async function getWeather() {
-    const city = document.getElementById('cityInput').value;
-    const apiKey = 'YOUR_API_KEY'; // replace with your OpenWeatherMap API key
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+function getWeatherByCity() {
+    const city = document.getElementById('cityInput').value.trim();
 
-    try {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        if (data.cod === 200) {
-            document.querySelector('.weatherInfo h2').textContent = data.name;
-            document.querySelector('.weatherInfo h3').textContent = `Temperature: ${data.main.temp}°C`;
-        } else {
-            alert('City not found!');
-        }
-    } catch (error) {
-        console.error('Error fetching weather data:', error);
+    if (city === '') {
+        alert('Please enter a city name.');
+        return;
     }
+
+    const encodedCity = encodeURIComponent(city); // encode spaces & special chars
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${encodedCity}&appid=${apiKey}&units=metric`;
+
+    console.log("Requesting:", apiUrl);
+
+    fetch(apiUrl)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('City not found or API key issue');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const temp = data.main.temp;
+            const name = data.name;
+            const desc = data.weather[0].description;
+
+            document.getElementById('temperature').textContent = `Temperature: ${temp}°C`;
+            document.getElementById('cityName').textContent = `City: ${name}`;
+            document.getElementById('dayName').textContent = `Day: ${getCurrentDay()} - ${desc}`;
+        })
+        .catch(error => {
+            alert('Error: ' + error.message);
+            console.error("API Fetch Error:", error);
+        });
+}
+
+function getCurrentDay() {
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    return days[new Date().getDay()];
 }
